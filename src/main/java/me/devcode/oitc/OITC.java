@@ -1,5 +1,11 @@
 package me.devcode.oitc;
 
+import org.bukkit.Difficulty;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.BufferedReader;
@@ -40,6 +46,14 @@ public class OITC extends JavaPlugin {
     private MySQLMethods mySQLMethods;
     private PlayerManager playerManager;
 
+    private File gameFile = new File("plugins/OITC", "game.yml");
+    private FileConfiguration gameConfig;
+
+    //Variables
+    private int minPlayers = 2;
+    private String mapName;
+    private List<String> maps = new ArrayList<>();
+
     @Override
     public void onEnable() {
     instance = this;
@@ -49,6 +63,31 @@ public class OITC extends JavaPlugin {
     messageUtils = new MessageUtils();
     mapVoting = new MapVoting();
     statsOfTheGame = new StatsOfTheGame();
+    setVariables();
+    }
+
+    private void setVariables() {
+        if (!gameFile.exists())
+            loadFile("game.yml");
+        gameConfig = YamlConfiguration.loadConfiguration(gameFile);
+        maps = gameConfig.getStringList("Game.Worlds");
+        maps.forEach(s -> {
+            WorldCreator worldCreator = new WorldCreator(s);
+            World world = worldCreator.createWorld();
+            world.setDifficulty(Difficulty.EASY);
+            world.setWeatherDuration(0);
+            world.setThunderDuration(0);
+            world.setTime(1000);
+            world.setThundering(false);
+            world.setStorm(false);
+            world.getEntities().forEach(entity -> {
+                if (!(entity instanceof Player)) {
+                    entity.remove();
+                }
+            });
+        });
+         minPlayers = Integer.valueOf(gameConfig.getString("Game.MinPlayers").replace("[", "").replace("]", ""));
+        mapName = gameConfig.getStringList("Game.Map").get(0);
     }
 
     /*

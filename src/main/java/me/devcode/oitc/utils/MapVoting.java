@@ -7,14 +7,16 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.devcode.oitc.OITC;
 
 public class MapVoting {
 
-    private HashMap<Player, String> getVoteByPlayer = new HashMap<>();
-    private HashMap<String, Integer> getVotes = new HashMap<>();
+    private Map<Player, String> getVoteByPlayer = new ConcurrentHashMap<>();
+    private Map<String, Integer> getVotes = new ConcurrentHashMap<>();
     @Setter
     @Getter
     private boolean isOver = false;
@@ -35,11 +37,8 @@ public class MapVoting {
     }
 
     public String getVoteByPlayer(Player player) {
-        if (!getVoteByPlayer.containsKey(player)) {
 
-            return null;
-        }
-        return getVoteByPlayer.get(player);
+        return getVoteByPlayer.getOrDefault(player, null);
     }
 
     public void removeVoteByPlayer(Player player) {
@@ -55,19 +54,12 @@ public class MapVoting {
         if(name == null) {
             return;
         }
-        if (getVotes.containsKey(name)) {
-
-            getVotes.put(name, getVotes.get(name) + vote);
-        } else {
-            getVotes.put(name, vote);
-        }
+        getVotes.put(name, getVotes.getOrDefault(name, 0)+vote);
     }
 
     public int getVotes(String name) {
-        if (!getVotes.containsKey(name)) {
-            return 0;
-        }
-        return getVotes.get(name);
+
+        return getVotes.getOrDefault(name,0);
     }
 
     public void handleVoting() {
@@ -75,7 +67,7 @@ public class MapVoting {
             int maxValueInMap = (Collections.max(getVotes.values()));
             for (Map.Entry<String, Integer> entry : getVotes.entrySet()) {
                 if (entry.getValue() == maxValueInMap) {
-                    BedWars.getInstance().setMapName(entry.getKey());
+                    OITC.getInstance().setMapName(entry.getKey());
                     break;
                 }
             }
