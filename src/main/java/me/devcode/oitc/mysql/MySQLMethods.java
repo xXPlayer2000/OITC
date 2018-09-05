@@ -48,7 +48,7 @@ public int getRank(String table, String from, String uuid) {
 				
 				
 				count++;
-				String namedUUID = rs.getString("UUID");
+				String namedUUID = rs.getString("uuid");
 				UUID uuid1 = UUID.fromString(namedUUID);
 				
 				if(uuid1.toString().equals(uuid)) {

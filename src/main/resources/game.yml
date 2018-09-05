@@ -1,0 +1,11 @@
+Game.Map:
+- Map1
+Game.MinPlayers:
+- 10
+Game.Teams:
+- 4
+Game.MaxPlayers:
+- 10
+Game.Worlds:
+- Map1
+- Map2

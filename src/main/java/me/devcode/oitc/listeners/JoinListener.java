@@ -1,10 +1,12 @@
 package me.devcode.oitc.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.ietf.jgss.Oid;
 
 import java.util.Random;
 
@@ -33,6 +35,14 @@ public class JoinListener implements Listener {
     }
     e.setJoinMessage(OITC.getInstance().getMessageUtils().getMessageByConfig("Messages.Join", true));
     OITC.getInstance().getPlayerUtils().addPlayer(player);
+
+    OITC.getInstance().getPlayerUtils().setPlayerManager(player.getUniqueId());
+        OITC.getInstance().getGameUtils().sendCustomScoreboard(player);
+    if(Bukkit.getOnlinePlayers().size() >= OITC.getInstance().getMinPlayers() &&!OITC.getInstance().getLobbyCountdown().isStarted()) {
+        player.sendMessage("Test");
+        OITC.getInstance().getLobbyCountdown().setStarted(true);
+        OITC.getInstance().getLobbyCountdown().runTaskTimer(OITC.getInstance(), 0,20);
+    }
 
     }
 

@@ -1,6 +1,5 @@
 package me.devcode.oitc.utils;
 
-import net.aiohub.bedwars.BedWars;
 
 import org.bukkit.entity.Player;
 

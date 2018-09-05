@@ -12,7 +12,7 @@ public class PreLoginListener implements Listener {
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent e) {
         if(OITC.getInstance().getGameStatus() == GameStatus.LOBBY)
-            OITC.getInstance().getPlayerManager().loadStats(e.getUniqueId().toString());
+            OITC.getInstance().getPlayerUtils().getPlayerManager(e.getUniqueId()).loadStats(e.getUniqueId().toString());
     }
 
 }
