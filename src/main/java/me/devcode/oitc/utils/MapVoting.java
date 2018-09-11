@@ -70,7 +70,7 @@ public class MapVoting {
                     break;
                 }
             }
-            isOver = true;
+            setOver(true);
         }catch(Exception e) {
 
         }

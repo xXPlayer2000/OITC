@@ -20,13 +20,18 @@ public class MessageUtils {
     }
 
     public String getMessageByConfig(String path, boolean prefix) {
-        cfg.set(path, "test");
-        try {
-            cfg.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!cfg.contains(path)) {
+            cfg.set(path, "test");
+            try {
+                cfg.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return "a";
         }
-        return "a";
+        if(prefix)
+            return cfg.getString("Messages.Prefix").replace("&", "§")+""+cfg.getString(path).replace("&", "§");
+        return cfg.getString(path).replace("&", "§");
         /*
         if(prefix)
             return cfg.getString("Messages.Prefix").replace("&", "§")+""+cfg.getString(path).replace("&", "§");

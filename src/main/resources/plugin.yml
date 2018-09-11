@@ -2,3 +2,7 @@ name: OITC
 version: 1.0
 author: devcode
 main: me.devcode.oitc.OITC
+commands:
+  start:
+  stats:
+  forcemap:

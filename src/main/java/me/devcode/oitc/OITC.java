@@ -18,9 +18,7 @@ import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -28,10 +26,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import me.devcode.oitc.countdowns.EndCountdown;
+import me.devcode.oitc.countdowns.IngameCountdown;
 import me.devcode.oitc.countdowns.LobbyCountdown;
+import me.devcode.oitc.listeners.CancelListeners;
+import me.devcode.oitc.listeners.DeathListener;
 import me.devcode.oitc.listeners.JoinListener;
 import me.devcode.oitc.listeners.PreLoginListener;
 import me.devcode.oitc.listeners.QuitListener;
+import me.devcode.oitc.listeners.VotingListener;
 import me.devcode.oitc.mysql.AsyncMySQL;
 import me.devcode.oitc.mysql.MySQLMethods;
 import me.devcode.oitc.mysql.MySQLStats;
@@ -39,9 +42,10 @@ import me.devcode.oitc.utils.GameStatus;
 import me.devcode.oitc.utils.GameUtils;
 import me.devcode.oitc.utils.MapVoting;
 import me.devcode.oitc.utils.MessageUtils;
-import me.devcode.oitc.utils.PlayerManager;
 import me.devcode.oitc.utils.PlayerUtils;
 import me.devcode.oitc.utils.StatsOfTheGame;
+import me.devcode.oitc.utils.LocationUtils;
+import me.devcode.oitc.utils.TitleAPI;
 
 @Getter
 @Setter
@@ -54,7 +58,11 @@ public class OITC extends JavaPlugin {
     private MapVoting mapVoting;
     private StatsOfTheGame statsOfTheGame;
     private LobbyCountdown lobbyCountdown;
+    private IngameCountdown ingameCountdown;
+    private EndCountdown endCountdown;
     private GameUtils gameUtils;
+    private LocationUtils locationUtils;
+    private TitleAPI titleAPI;
 
     private List<String> dataValues = new ArrayList<>();
     private AsyncMySQL mysql;
@@ -70,6 +78,7 @@ public class OITC extends JavaPlugin {
     private int minPlayers = 2;
     private String mapName;
     private List<String> maps = new ArrayList<>();
+    private boolean isForceMap = false;
 
     @Override
     public void onEnable() {
@@ -82,9 +91,14 @@ public class OITC extends JavaPlugin {
     statsOfTheGame = new StatsOfTheGame();
     lobbyCountdown = new LobbyCountdown();
     gameUtils = new GameUtils();
+    locationUtils = new LocationUtils();
+    ingameCountdown = new IngameCountdown();
+    endCountdown = new EndCountdown();
+    titleAPI = new TitleAPI();
     setVariables();
     setMySQLConnection();
     registerListeners();
+    registerCommands();
     }
 
     private void setVariables() {
@@ -157,6 +171,9 @@ public class OITC extends JavaPlugin {
         listeners.add(new JoinListener());
         listeners.add(new PreLoginListener());
         listeners.add(new QuitListener());
+        listeners.add(new CancelListeners());
+        listeners.add(new VotingListener());
+        listeners.add(new DeathListener());
         listeners.forEach(listener ->
                 pluginManager.registerEvents(listener, this));
     }

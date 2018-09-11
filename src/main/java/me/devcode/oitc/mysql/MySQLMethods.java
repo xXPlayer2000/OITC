@@ -35,9 +35,9 @@ public void createPlayer(String uuid) {
 		
 	}	
 	
-public int getRank(String table, String from, String uuid) {
+public int getRank(String table, String uuid) {
 	int count = 0;
-	if(OITC.getInstance().getStats().getBooleanMethod(table, from, uuid)) {
+	if(OITC.getInstance().getStats().getBooleanMethod(table, "uuid", uuid)) {
 		ResultSet rs = null;
 		try{
 			

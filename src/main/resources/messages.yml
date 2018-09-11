@@ -1,0 +1,12 @@
+Messages:
+  Prefix: '&7[&bOITC&7] '
+  Join: '%PLAYER% has joined'
+  Quit: '%PLAYER% has left'
+  Start: 'You started the game'
+  GameIsStarting: 'The game is already starting.'
+  Map: 'You choosed the Map %MAP%'
+  Win: '%PLAYER% has won'
+  Restart: 'Server is restarting in %TIMER%'
+  Eliminated: 'You are eliminated'
+  Kill: '+1 Kill'
+  Death: '%PLAYER% has been killed'

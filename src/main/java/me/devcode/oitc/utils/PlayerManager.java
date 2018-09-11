@@ -15,6 +15,7 @@ import me.devcode.oitc.OITC;
 
 public class PlayerManager {
     private UUID player;
+    private boolean isDataBack = false;
     private Map<String, Object> values = new ConcurrentHashMap<>();
 
     public PlayerManager(UUID player) {
@@ -54,11 +55,19 @@ public class PlayerManager {
         OITC.getInstance().getDataValues().forEach(dValues ->{
             setValue(dValues, OITC.getInstance().getMySQLMethods().getValue(uuid, dValues));
         });
+        setValue("rank", OITC.getInstance().getMySQLMethods().getRank("oitc", uuid));
+
     }
+
+
 
     public void setDataback() {
         if(Bukkit.getPlayer(UUID.fromString(player.toString())) == null)
             return;
+        if(isDataBack)
+            return;
+        isDataBack = true;
         OITC.getInstance().getMySQLMethods().setAllMethod("oitc", "uuid", player.toString(), getValue("kills"), getValue("deaths"), getValue("wins"), getValue("games"), getValue("points"));
+
     }
 }

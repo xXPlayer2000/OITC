@@ -29,6 +29,18 @@ public class PlayerUtils {
         return playerManager.getOrDefault(player, new PlayerManager(player));
     }
 
+    public void removePlayerLive(Player player) {
+        playerLives.put(player, getPlayerLives(player)-1);
+    }
+
+    public void setPlayerLives(Player player) {
+        playerLives.put(player,6);
+    }
+
+    public Integer getPlayerLives(Player player) {
+        return playerLives.getOrDefault(player, 0);
+    }
+
     public void addPlayer(Player player) {
         players.add(player);
     }
@@ -45,8 +57,5 @@ public class PlayerUtils {
         specs.remove(player);
     }
 
-    public Integer getLives(Player player) {
-        return playerLives.getOrDefault(player, 0);
-    }
 
 }

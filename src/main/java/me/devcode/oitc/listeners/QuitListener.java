@@ -15,16 +15,19 @@ public class QuitListener implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         e.setQuitMessage(null);
         if(OITC.getInstance().getGameStatus() == GameStatus.LOBBY) {
-            e.setQuitMessage(OITC.getInstance().getMessageUtils().getMessageByConfig("Messages.Quit", true));
+            e.setQuitMessage(OITC.getInstance().getMessageUtils().getMessageByConfig("Messages.Quit", true).replace("%PLAYER%", e.getPlayer().getName()));
             OITC.getInstance().getPlayerUtils().removePlayer(e.getPlayer());
             OITC.getInstance().getMapVoting().removeVoteByPlayer(e.getPlayer());
             return;
         }
         if(OITC.getInstance().getPlayerUtils().getPlayers().contains(e.getPlayer())) {
-            e.setQuitMessage(OITC.getInstance().getMessageUtils().getMessageByConfig("Messages.Quit", true));
+            e.setQuitMessage(OITC.getInstance().getMessageUtils().getMessageByConfig("Messages.Quit", true).replace("%PLAYER%", e.getPlayer().getName()));
             OITC.getInstance().getPlayerUtils().removePlayer(e.getPlayer());
             OITC.getInstance().getPlayerUtils().getPlayerManager(e.getPlayer().getUniqueId()).addValue("deaths", 1);
             OITC.getInstance().getPlayerUtils().getPlayerManager(e.getPlayer().getUniqueId()).setDataback();
+            if(OITC.getInstance().getPlayerUtils().getPlayers().size() == 1) {
+                OITC.getInstance().getGameUtils().onWin(false);
+            }
            // Bukkit.getOnlinePlayers().forEach(all ->
              //       BedWars.getInstance().getGameUtils().updateScoreboard(all));
            // BedWars.getInstance().getGameUtils().detectTeamDestroyed(team);

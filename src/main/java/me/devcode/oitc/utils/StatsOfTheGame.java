@@ -6,13 +6,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.Getter;
 import me.devcode.oitc.OITC;
 
+@Getter
 public class StatsOfTheGame {
 
     private Map<Player, Integer> kills = new ConcurrentHashMap<>();
     private Map<Player, Integer> arrowShots = new ConcurrentHashMap<>();
     private Map<Player, Integer> hits = new ConcurrentHashMap<>();
+
+    public void loadPlayers(Player player) {
+        kills.put(player, 0);
+        arrowShots.put(player, 0);
+        hits.put(player, 0);
+    }
 
     public void addKill(Player player) {
         if(!kills.containsKey(player)) {

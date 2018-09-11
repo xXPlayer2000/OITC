@@ -11,8 +11,11 @@ public class PreLoginListener implements Listener {
 
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent e) {
-        if(OITC.getInstance().getGameStatus() == GameStatus.LOBBY)
+        if (OITC.getInstance().getGameStatus() == GameStatus.LOBBY) {
+            OITC.getInstance().getMySQLMethods().createPlayer(e.getUniqueId().toString());
+            OITC.getInstance().getPlayerUtils().setPlayerManager(e.getUniqueId());
             OITC.getInstance().getPlayerUtils().getPlayerManager(e.getUniqueId()).loadStats(e.getUniqueId().toString());
+        }
     }
 
 }
